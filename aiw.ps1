@@ -39,14 +39,14 @@ DisplayMenu
 <#
 Stops  and disables the services that slow down the pc and makes the hard drive go to 100% continuously
 #>
-Set-Service -Name "SysMain" -Status Stopped -StartupType disabled
-Set-Service -Name "WSearch" -Status Stopped -StartupType disabled
-Set-Service -Name "DiagTrack" -Status Stopped -StartupType disabled
-Set-Service -Name "dmwappushservice" -Status Stopped -StartupType disabled
-Set-Service -Name "MapsBroker" -Status Stopped -StartupType disabled
-Set-Service -Name "RemoteRegistry" -Status Stopped -StartupType disabled
-Set-Service -Name "BDESVC" -Status Stopped -StartupType disabled
-Set-Service -Name "Fax" -Status Stopped -StartupType disabled
+Set-Service -Name "SysMain" -StartupType disabled
+Set-Service -Name "WSearch" -StartupType disabled
+Set-Service -Name "DiagTrack" -StartupType disabled
+Set-Service -Name "dmwappushservice" -StartupType disabled
+Set-Service -Name "MapsBroker" -StartupType disabled
+Set-Service -Name "RemoteRegistry" -StartupType disabled
+Set-Service -Name "Fax" -StartupType disabled
+Set-Service -Name "BDESVC" -StartupType disabled
 Start-Sleep -Seconds 2
 DisplayMenu
 }
