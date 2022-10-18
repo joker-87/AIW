@@ -35,9 +35,135 @@ Start-Sleep -Seconds 2
 DisplayMenu
 }
 3 {
-#OPTION3 - Disable services to optimize windows 
+#OPTION3 - Stop and Disable services to optimize windows
 <#
-Stops  and disables the services that slow down the pc and makes the hard drive go to 100% continuously
+Here we stop the services that slow down the pc and makes the hard drive go to 100% continuously
+#>
+Stop-Service 'SysMain' -Force
+Stop-Service 'WSearch' -Force
+Stop-Service 'DiagTrack' -Force
+Stop-Service 'dmwappushservice' -Force
+Stop-Service 'MapsBroker' -Force
+Stop-Service 'RemoteRegistry' -Force
+Stop-Service 'Fax' -Force
+Stop-Service 'BDESVC' -Force
+<#
+Here we check if the services are stopped and display a message to the user
+#>
+$trap = get-service -Name SysMain
+if ($trap.status -ne "Running")
+{
+
+    Write-Host "The service " $trap.name " is not running "
+}
+
+if ($trap.status -eq "Running")
+{
+
+    Write-Host "The service " $trap.name " is not running "
+}
+Start-Sleep -Seconds 1
+
+$trap = get-service -Name Wsearch
+if ($trap.status -ne "Running")
+{
+
+    Write-Host "The service " $trap.name " is not running "
+}
+
+if ($trap.status -eq "Running")
+{
+
+    Write-Host "The service " $trap.name " is not running "
+}
+Start-Sleep -Seconds 1
+
+$trap = get-service -Name DiagTrack
+if ($trap.status -ne "Running")
+{
+
+    Write-Host "The service " $trap.name " is not running "
+}
+
+if ($trap.status -eq "Running")
+{
+
+    Write-Host "The service " $trap.name " is not running "
+}
+Start-Sleep -Seconds 1
+
+$trap = get-service -Name MapsBroker
+if ($trap.status -ne "Running")
+{
+
+    Write-Host "The service " $trap.name " is not running "
+}
+
+if ($trap.status -eq "Running")
+{
+
+    Write-Host "The service " $trap.name " is not running "
+}
+Start-Sleep -Seconds 1
+
+$trap = get-service -Name RemoteRegistry
+if ($trap.status -ne "Running")
+{
+
+    Write-Host "The service " $trap.name " is not running "
+}
+
+if ($trap.status -eq "Running")
+{
+
+    Write-Host "The service " $trap.name " is not running "
+}
+Start-Sleep -Seconds 1
+
+$trap = get-service -Name Fax
+if ($trap.status -ne "Running")
+{
+
+    Write-Host "The service " $trap.name " is not running "
+}
+
+if ($trap.status -eq "Running")
+{
+
+    Write-Host "The service " $trap.name " is not running "
+}
+Start-Sleep -Seconds 1
+
+$trap = get-service -Name BDESVC
+if ($trap.status -ne "Running")
+{
+
+    Write-Host "The service " $trap.name " is not running "
+}
+
+if ($trap.status -eq "Running")
+{
+
+    Write-Host "The service " $trap.name " is not running "
+}
+Start-Sleep -Seconds 1
+
+$trap = get-service -Name dmwappushservice
+if ($trap.status -ne "Running")
+{
+
+    Write-Host "The service " $trap.name " is not running "
+}
+
+if ($trap.status -eq "Running")
+{
+
+    Write-Host "The service " $trap.name " is not running "
+}
+Start-Sleep -Seconds 3
+
+<#
+Here we disable the services that slow down the pc and makes the hard drive go to 100% continuously
 #>
 Set-Service -Name "SysMain" -StartupType disabled
 Set-Service -Name "WSearch" -StartupType disabled
@@ -48,6 +174,177 @@ Set-Service -Name "RemoteRegistry" -StartupType disabled
 Set-Service -Name "Fax" -StartupType disabled
 Set-Service -Name "BDESVC" -StartupType disabled
 Start-Sleep -Seconds 2
+<#
+Here we check the services StartType and show it to the user
+#>
+$trap = get-service -Name SysMain
+if ($trap.StartType -eq "Automatic")
+{
+
+    Write-Host "The service " $trap.name " Start Type is automatic "
+}
+
+if ($trap.StartType -eq "Manual")
+{
+
+    Write-Host "The service " $trap.name " Start Type is Manual "
+}
+Start-Sleep -Seconds 1
+
+if ($trap.StartType -eq "Disabled")
+{
+
+    Write-Host "The service " $trap.name " Start Type is disabled "
+}
+Start-Sleep -Seconds 1
+
+
+$trap = get-service -Name WSearch
+if ($trap.StartType -eq "Automatic")
+{
+
+    Write-Host "The service " $trap.name " Start Type is automatic "
+}
+
+if ($trap.StartType -eq "Manual")
+{
+
+    Write-Host "The service " $trap.name " Start Type is Manual "
+}
+Start-Sleep -Seconds 1
+
+if ($trap.StartType -eq "Disabled")
+{
+
+    Write-Host "The service " $trap.name " Start Type is disabled "
+}
+Start-Sleep -Seconds 1
+
+$trap = get-service -Name DiagTrack
+if ($trap.StartType -eq "Automatic")
+{
+
+    Write-Host "The service " $trap.name " Start Type is automatic "
+}
+
+if ($trap.StartType -eq "Manual")
+{
+
+    Write-Host "The service " $trap.name " Start Type is Manual "
+}
+Start-Sleep -Seconds 1
+
+if ($trap.StartType -eq "Disabled")
+{
+
+    Write-Host "The service " $trap.name " Start Type is disabled "
+}
+Start-Sleep -Seconds 1
+
+$trap = get-service -Name dmwappushservice
+if ($trap.StartType -eq "Automatic")
+{
+
+    Write-Host "The service " $trap.name " Start Type is automatic "
+}
+
+if ($trap.StartType -eq "Manual")
+{
+
+    Write-Host "The service " $trap.name " Start Type is Manual "
+}
+Start-Sleep -Seconds 1
+
+if ($trap.StartType -eq "Disabled")
+{
+
+    Write-Host "The service " $trap.name " Start Type is disabled "
+}
+Start-Sleep -Seconds 1
+
+$trap = get-service -Name MapsBroker
+if ($trap.StartType -eq "Automatic")
+{
+
+    Write-Host "The service " $trap.name " Start Type is automatic "
+}
+
+if ($trap.StartType -eq "Manual")
+{
+
+    Write-Host "The service " $trap.name " Start Type is Manual "
+}
+Start-Sleep -Seconds 1
+
+if ($trap.StartType -eq "Disabled")
+{
+
+    Write-Host "The service " $trap.name " Start Type is disabled "
+}
+Start-Sleep -Seconds 1
+
+$trap = get-service -Name RemoteRegistry
+if ($trap.StartType -eq "Automatic")
+{
+
+    Write-Host "The service " $trap.name " Start Type is automatic "
+}
+
+if ($trap.StartType -eq "Manual")
+{
+
+    Write-Host "The service " $trap.name " Start Type is Manual "
+}
+Start-Sleep -Seconds 1
+
+if ($trap.StartType -eq "Disabled")
+{
+
+    Write-Host "The service " $trap.name " Start Type is disabled "
+}
+Start-Sleep -Seconds 1
+
+$trap = get-service -Name Fax
+if ($trap.StartType -eq "Automatic")
+{
+
+    Write-Host "The service " $trap.name " Start Type is automatic "
+}
+
+if ($trap.StartType -eq "Manual")
+{
+
+    Write-Host "The service " $trap.name " Start Type is Manual "
+}
+Start-Sleep -Seconds 1
+
+if ($trap.StartType -eq "Disabled")
+{
+
+    Write-Host "The service " $trap.name " Start Type is disabled "
+}
+Start-Sleep -Seconds 1
+
+$trap = get-service -Name BDESVC
+if ($trap.StartType -eq "Automatic")
+{
+
+    Write-Host "The service " $trap.name " Start Type is automatic "
+}
+
+if ($trap.StartType -eq "Manual")
+{
+
+    Write-Host "The service " $trap.name " Start Type is Manual "
+}
+Start-Sleep -Seconds 1
+
+if ($trap.StartType -eq "Disabled")
+{
+
+    Write-Host "The service " $trap.name " Start Type is disabled "
+}
+Start-Sleep -Seconds 3
 DisplayMenu
 }
 4 {
@@ -57,16 +354,17 @@ we are installing the base software via winget package manager, to add another a
 and add the string "winget install appid"
 to remove an app from the install list, place the simbol # before the string belonging to the app you dont wish to install
 #>
-winget install Mozilla.Firefox -h
-winget install Google.Chrome -h
-winget install Adobe.Acrobat.Reader.64-bit -h
-winget install 7zip.7zip -h
-winget install RARLab.WinRAR -h
-winget install RustDesk.RustDesk -h
-winget install VideoLAN.VLC -h
-winget install AIMP.AIMP -h
-winget install -e --id Microsoft.dotNetFramework -h
-winget install WhatsApp.WhatsApp -h
+winget install Mozilla.Firefox -h --accept-package-agreements --accept-source-agreements
+winget install Google.Chrome -h --accept-package-agreements --accept-source-agreements
+winget install Adobe.Acrobat.Reader.64-bit -h --accept-package-agreements --accept-source-agreements
+winget install 7zip.7zip -h --accept-package-agreements --accept-source-agreements
+winget install RARLab.WinRAR -h --accept-package-agreements --accept-source-agreements
+winget install RustDesk.RustDesk -h --accept-package-agreements --accept-source-agreements
+winget install VideoLAN.VLC -h --accept-package-agreements --accept-source-agreements
+winget install AIMP.AIMP -h --accept-package-agreements --accept-source-agreements
+winget install -e --id Microsoft.dotNetFramework -h --accept-package-agreements --accept-source-agreements
+winget install WhatsApp.WhatsApp -h --accept-package-agreements --accept-source-agreements
+Dism /online /Enable-Feature /FeatureName:"NetFx3"
 start-sleep -seconds 3
 DisplayMenu
 }
