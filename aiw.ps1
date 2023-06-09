@@ -5,8 +5,8 @@ Write-Host @"
 |             After Installl Wizard                 |
 |                                         @joker_sr2|
 +===================================================+
-|                 IMPORTANTE                        |
-|    INSTALAR WINGET ANTES DE USAR LA OPCION 3      |
+|      Please verify that winget is installed       |
+|             before using option 4                 |
 |                                                   |
 |    1) Check if winget is installed                |
 |    2) Install Winget from Microsoft Store         |
