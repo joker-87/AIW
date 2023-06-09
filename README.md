@@ -2,8 +2,7 @@
 after install wizard for windows 10/11
                                                                                           
 
-Powershell script that optimize windows by stoping services that slow down windows and disablig them.
-Also install base programs via Winget package manager (view list)
+Powershell script to optimize Windows by stopping and disabling services that slow it down. Also installs base programs via the Winget package manager.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 Services disabled by the script:
