@@ -37,10 +37,6 @@ _RemoteRegistry:
 
 The Windows Remote Registry service is a feature on all Microsoft Windows operating system that enables remote access to the client computer or server for viewing and modifying the Windows registry entries.
 
-_Fax:
-
-Windows 10 include an application called Windows Fax and Scan. This program allows users to send and receive faxes right from their computers.
-
 _BDESVC:
 
 BDESVC hosts the BitLocker Drive Encryption service. BitLocker Drive Encryption provides secure startup for the operating system, as well as full volume encryption for OS, fixed or removable volumes.
@@ -80,4 +76,9 @@ Enables NetFramework 3.5
 
 Miscellaneous:
 
-*enables ICMP (ping) traffic
+-Firewall rule to enable ICMP (ping) traffic
+
+-Turn On Webcam On/Off OSD Notifications:
+
+this feature will prompt Windows to send you notifications every time an app activates
+(or deactivates) your webcam. Webcam OSD notification is disabled by default on all Windows 10 devices. 
