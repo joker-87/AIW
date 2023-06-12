@@ -81,3 +81,23 @@ Miscellaneous:
 
 this feature will prompt Windows to send you notifications every time an app activates
 (or deactivates) your webcam. Webcam OSD notification is disabled by default on all Windows 10 devices. 
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Add or remove software from winget list:
+
+To add software to the winget install list, simply check if it exist in winget: 
+
+  winget search "software_name"
+
+then add the following line in the script (after line 357):
+
+  winget install "software_name" -h --accept-package-agreements --accept-source-agreements
+
+---
+To remove softwware from the list, just comment it (#) at the start of the line.
+
+example:
+
+  #winget install "software_name" -h --accept-package-agreements --accept-source-agreements
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
