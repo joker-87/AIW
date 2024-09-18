@@ -1,374 +1,218 @@
-function DisplayMenu {
-Clear-Host
-Write-Host @"
-+===================================================+
-|             After Installl Wizard                 |
-|                                         @joker_sr2|
-+===================================================+
-|      Please verify that winget is installed       |
-|             before using option 4                 |
-|                                                   |
-|    1) Check if winget is installed                |
-|    2) Install Winget from Microsoft Store         |
-|    3) Optimize Windows                            |
-|    4) install base software                       |
-|    9) EXIT                                        |
-+===================================================+
+function Show-Menu {
+    Write-Host "===========================" -F darkgreen
+    Write-Host "   After Install Wizard    " -F darkgreen
+    Write-Host "========== MENU ==========="  -F darkgreen
+    Write-Host " 1: Check & install Winget "  -F darkgreen
+    Write-Host " 2: Optimize Windows"  -F darkgreen
+    Write-Host " 3: Install base software" -F darkgreen
+    Write-Host " 4: Activation" -F darkgreen
+    Write-Host " Q: Quit" -F darkgreen
+    Write-Host "==========================" -F darkgreen
+    Write-Host " Press the corresponding key to make your selection " -F darkgreen
+}
 
+do {
+    Show-Menu
+    $key = [System.Console]::ReadKey($true).Key
+
+    switch ($key) {
+        'D1' {
+            if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
+                Start-Process ms-windows-store://pdp/?ProductId=9NBLGGH4NNS1
+        
+                function IsAppInstalled {
+                    $app = Get-AppxPackage -Name Microsoft.DesktopAppInstaller -AllUsers
+                    return [bool]$app
+                }
+        
+                do {
+                    Write-Host "Waiting for Winget to be installed..." -B DarkRed
+                    Start-Sleep -Seconds 10
+                } until (IsAppInstalled)
+            
+            }
+            else {
+                Write-Host "winget is installed on this system." -F darkgreen
+                Start-Sleep -Seconds 2
+            }
+        }
+        'D2' {
+            Write-Host "Uninstalling bloatware" -F DarkGreen
+            $packages = @(
+                "*ActiproSoftwareLLC*"
+                "*AdobeSystemsIncorporated.AdobePhotoshopExpress*"
+                "*BubbleWitch3Saga*"
+                "*CandyCrush*"
+                "*Dolby*"
+                "*Duolingo-LearnLanguagesforFree*"
+                "*EclipseManager*"
+                "*Facebook*"
+                "*Flipboard*"
+                "*LinkedIn*"
+                "*Microsoft.Advertising.Xaml_10.1712.5.0_x64__8wekyb3d8bbwe*"
+                "*Microsoft.Advertising.Xaml_10.1712.5.0_x86__8wekyb3d8bbwe*"
+                "*Microsoft.BingWeather*"
+                "*Microsoft.MicrosoftStickyNotes*"
+                "*Minecraft*"
+                "*PandoraMediaInc*"
+                "*Royal Revolt*"
+                "*Speed Test*"
+                "*Spotify*"
+                "*Sway*"
+                "*Twitter*"
+                "*Wunderlist*"
+                "Microsoft.3DBuilder",
+                "Microsoft.549981C3F5F10"
+                "Microsoft.BingNews"
+                "Microsoft.GetHelp"
+                "Microsoft.Getstarted"
+                "Microsoft.Messaging"
+                "Microsoft.Microsoft3DViewer"
+                "Microsoft.MicrosoftOfficeHub"
+                "Microsoft.MicrosoftSolitaireCollection"
+                "Microsoft.Mixedreality.Portal"
+                "Microsoft.NetworkSpeedTest"
+                "Microsoft.News"
+                "Microsoft.Office.Lens"
+                "Microsoft.Office.OneNote"
+                "Microsoft.Office.Sway"
+                "Microsoft.Office.Todo.List"
+                "Microsoft.OneConnect"
+                "Microsoft.People"
+                "Microsoft.Print3D"
+                "Microsoft.RemoteDesktop"
+                "Microsoft.SkypeApp"
+                "Microsoft.StorePurchaseApp"
+                "Microsoft.Wallet",
+                "Microsoft.Whiteboard"
+                "Microsoft.WindowsAlarms"
+                "Microsoft.WindowsCamera"
+                "Microsoft.WindowsFeedbackHub"
+                "Microsoft.WindowsMaps"
+                "Microsoft.WindowsSoundRecorder"
+                "Microsoft.Xbox.TCUI"
+                "Microsoft.XboxApp"
+                "Microsoft.XboxGameOverlay"
+                "Microsoft.XboxIdentityProvider"
+                "Microsoft.XboxSpeechToTextOverlay"
+                "Microsoft.YourPhone",
+                "Microsoft.ZuneMusic"
+                "Microsoft.ZuneVideo"
+                "microsoft.windowscommunicationsapps"
+            )
+
+            foreach ($package in $packages) {
+                Write-Host "Attempting to uninstall $package"
+                $app = Get-AppxPackage -Name $package -ErrorAction SilentlyContinue
+                if ($app -ne $null) {
+                    $app | Remove-AppxPackage
+                    Write-Host "$package uninstalled"
+                }
+                else {
+                    Write-Host "$package is not installed"
+                }
+            }
+            Start-Sleep -seconds 1
+            Write-Host ' Opening System Properties Performance ' -F DarkGreen
+            $message = "Select the option:" + [Environment]::NewLine + "Adjust for better performance" + [Environment]::NewLine + " and then press [Apply] and [OK]" + [Environment]::NewLine + "but keep the option:  " + [Environment]::NewLine + "Show thumbnails instead of icons"
+            $wshell.Popup($message, 0, "Performance Options", 0x1) 
+            Start-Process C:\Windows\System32\SystemPropertiesPerformance.exe
+            Write-Host ' Creating a firewall rule to allow ICMP traffic (Ping) ' -F DarkGreen
+            Start-Sleep -Seconds 1
+            netsh advfirewall firewall add rule name="Ping" protocol="icmpv4:8,any" dir=in action=allow
+            Write-Host ' Turn On Webcam On/Off OSD Notifications ' -F DarkGreen
+            Start-Sleep -Seconds 1
+            Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\OEM\Device\Capture' -Name 'NoPhysicalCameraLED' -Value '00000001'
+            Start-Sleep -Seconds 1
+            Write-Host "Optimizeing Windows Services" -F DarkGreen
+            $services = @(
+                "SysMain"
+                "WSearch"
+                "DiagTrack"
+                "dmwappushservice"
+                "MapsBroker"
+                "RemoteRegistry"
+                "BDESVC"
+                "ClickToRunSvc"
+            )
+            foreach ($service in $services) {
+                Write-Host "Stop and disable services"
+                Stop-Service $service -Force
+                Set-Service -Name $service -StartupType Disabled
+                Write-Host "Checking services statuses"
+                $trap = get-service -Name $state
+                switch ($trap.StartType) {
+                    "Automatic" {
+                        Write-Host "The service $trap.Name Start Type is automatic"
+                    }
+                    "Manual" {
+                        Write-Host "The service $trap.Name Start Type is Manual"
+                    }
+                    "Disabled" {
+                        Write-Host "The service $trap.Name Start Type is disabled"
+                    }
+                    Default {
+                        Write-Host "Unknown StartType: $($trap.StartType)"
+                    }
+                }
+            }
+            Start-Sleep -Seconds 1
+        }
+        'D3' {
+            $apps = @(
+                "Mozilla.Firefox",
+                "Google.Chrome",
+                "Adobe.Acrobat.Reader.64-bit",
+                "7zip.7zip",
+                "RARLab.WinRAR",
+                "Microsoft.DotNet.Framework.DeveloperPack_4",
+                "Microsoft.PCManager",
+                "WhatsApp",
+                "Microsoft.VCRedist.2005.x64",
+                "Microsoft.VCRedist.2008.x64",
+                "Microsoft.VCRedist.2010.x64",
+                "Microsoft.VCRedist.2012.x64",
+                "Microsoft.VCRedist.2013.x64",
+                "Microsoft.VCRedist.2015+.x64",
+                "AIMP.AIMP",
+                "VideoLAN.VLC"
+            )
+            $apps | ForEach-Object {
+                winget install $_  -h --accept-package-agreements --accept-source-agreements
+            }
+            Dism /online /Enable-Feature /FeatureName:"NetFx3"
+        }
+        'D4' {
+            Write-Host (' Activating WinRAR, please wait ') -F DarkGreen
+            $file = "C:\Program Files\WinRAR\rarreg.key"
+            $data = @"
+RAR registration data
+intercambiosvirtuales.org
+Unlimited Company License
+UID=a575674ee3c43ffe7d87
+64122122507d8771aa323ef5a6d06aa2bcbfe377196edbf8d98784
+fde1ef1a6bb5b34a9f4060fce6cb5ffde62890079861be57638717
+7131ced835ed65cc743d9777f2ea71a8e32c7e593cf66794343565
+b41bcf56929486b8bcdac33d50ecf7739960dd4b9b83bc50a10c05
+deb052aa17aab4ce70e123cfc882dcda379e7380a23d44a234a527
+58d14740a273b3122666fd1091a81244781970359f9834c2605da8
+0dbc2b930f2e660657d762ef929448ca12b843cab1ab1874926243
 "@
 
-$MENU = Read-Host "OPTION"
-Switch ($MENU)
-{
-1 {
-#OPTION1 - Check if winget is installed
-winget
-Start-Sleep -Seconds 2
-DisplayMenu
-}
-2 {
-#OPTION2 - Install Winget
-start ms-windows-store://pdp/?ProductId=9NBLGGH4NNS1
-Start-Sleep -Seconds 2
-DisplayMenu
-}
-3 {
-#OPTION3 - Optimize Windows
-<#
-Here we stop the services that slow down the pc and makes the hard drive go to 100% continuously
-#>
-Stop-Service 'SysMain' -Force
-Stop-Service 'WSearch' -Force
-Stop-Service 'DiagTrack' -Force
-Stop-Service 'dmwappushservice' -Force
-Stop-Service 'MapsBroker' -Force
-Stop-Service 'RemoteRegistry' -Force
-Stop-Service 'BDESVC' -Force
-<#
-Here we check if the services are stopped and display a message to the user
-#>
-$trap = get-service -Name SysMain
-if ($trap.status -ne "Running")
-{
-
-    Write-Host "The service " $trap.name " is not running "
-}
-
-if ($trap.status -eq "Running")
-{
-
-    Write-Host "The service " $trap.name " is not running "
-}
-Start-Sleep -Seconds 1
-
-$trap = get-service -Name Wsearch
-if ($trap.status -ne "Running")
-{
-
-    Write-Host "The service " $trap.name " is not running "
-}
-
-if ($trap.status -eq "Running")
-{
-
-    Write-Host "The service " $trap.name " is not running "
-}
-Start-Sleep -Seconds 1
-
-$trap = get-service -Name DiagTrack
-if ($trap.status -ne "Running")
-{
-
-    Write-Host "The service " $trap.name " is not running "
-}
-
-if ($trap.status -eq "Running")
-{
-
-    Write-Host "The service " $trap.name " is not running "
-}
-Start-Sleep -Seconds 1
-
-$trap = get-service -Name MapsBroker
-if ($trap.status -ne "Running")
-{
-
-    Write-Host "The service " $trap.name " is not running "
-}
-
-if ($trap.status -eq "Running")
-{
-
-    Write-Host "The service " $trap.name " is not running "
-}
-Start-Sleep -Seconds 1
-
-$trap = get-service -Name RemoteRegistry
-if ($trap.status -ne "Running")
-{
-
-    Write-Host "The service " $trap.name " is not running "
-}
-
-if ($trap.status -eq "Running")
-{
-
-    Write-Host "The service " $trap.name " is not running "
-}
-Start-Sleep -Seconds 1
-
-if ($trap.status -eq "Running")
-{
-
-    Write-Host "The service " $trap.name " is not running "
-}
-Start-Sleep -Seconds 1
-
-$trap = get-service -Name BDESVC
-if ($trap.status -ne "Running")
-{
-
-    Write-Host "The service " $trap.name " is not running "
-}
-
-if ($trap.status -eq "Running")
-{
-
-    Write-Host "The service " $trap.name " is not running "
-}
-Start-Sleep -Seconds 1
-
-$trap = get-service -Name dmwappushservice
-if ($trap.status -ne "Running")
-{
-
-    Write-Host "The service " $trap.name " is not running "
-}
-
-if ($trap.status -eq "Running")
-{
-
-    Write-Host "The service " $trap.name " is not running "
-}
-Start-Sleep -Seconds 2
-
-<#
-Here we disable the services that slow down the pc and makes the hard drive go to 100% continuously
-#>
-Set-Service -Name "SysMain" -StartupType disabled
-Set-Service -Name "WSearch" -StartupType disabled
-Set-Service -Name "DiagTrack" -StartupType disabled
-Set-Service -Name "dmwappushservice" -StartupType disabled
-Set-Service -Name "MapsBroker" -StartupType disabled
-Set-Service -Name "RemoteRegistry" -StartupType disabled
-Set-Service -Name "BDESVC" -StartupType disabled
-Start-Sleep -Seconds 2
-<#
-Here we check the services StartType and show it to the user
-#>
-$trap = get-service -Name SysMain
-if ($trap.StartType -eq "Automatic")
-{
-
-    Write-Host "The service " $trap.name " Start Type is automatic "
-}
-
-if ($trap.StartType -eq "Manual")
-{
-
-    Write-Host "The service " $trap.name " Start Type is Manual "
-}
-Start-Sleep -Seconds 1
-
-if ($trap.StartType -eq "Disabled")
-{
-
-    Write-Host "The service " $trap.name " Start Type is disabled "
-}
-Start-Sleep -Seconds 1
-
-
-$trap = get-service -Name WSearch
-if ($trap.StartType -eq "Automatic")
-{
-
-    Write-Host "The service " $trap.name " Start Type is automatic "
-}
-
-if ($trap.StartType -eq "Manual")
-{
-
-    Write-Host "The service " $trap.name " Start Type is Manual "
-}
-Start-Sleep -Seconds 1
-
-if ($trap.StartType -eq "Disabled")
-{
-
-    Write-Host "The service " $trap.name " Start Type is disabled "
-}
-Start-Sleep -Seconds 1
-
-$trap = get-service -Name DiagTrack
-if ($trap.StartType -eq "Automatic")
-{
-
-    Write-Host "The service " $trap.name " Start Type is automatic "
-}
-
-if ($trap.StartType -eq "Manual")
-{
-
-    Write-Host "The service " $trap.name " Start Type is Manual "
-}
-Start-Sleep -Seconds 1
-
-if ($trap.StartType -eq "Disabled")
-{
-
-    Write-Host "The service " $trap.name " Start Type is disabled "
-}
-Start-Sleep -Seconds 1
-
-$trap = get-service -Name dmwappushservice
-if ($trap.StartType -eq "Automatic")
-{
-
-    Write-Host "The service " $trap.name " Start Type is automatic "
-}
-
-if ($trap.StartType -eq "Manual")
-{
-
-    Write-Host "The service " $trap.name " Start Type is Manual "
-}
-Start-Sleep -Seconds 1
-
-if ($trap.StartType -eq "Disabled")
-{
-
-    Write-Host "The service " $trap.name " Start Type is disabled "
-}
-Start-Sleep -Seconds 1
-
-$trap = get-service -Name MapsBroker
-if ($trap.StartType -eq "Automatic")
-{
-
-    Write-Host "The service " $trap.name " Start Type is automatic "
-}
-
-if ($trap.StartType -eq "Manual")
-{
-
-    Write-Host "The service " $trap.name " Start Type is Manual "
-}
-Start-Sleep -Seconds 1
-
-if ($trap.StartType -eq "Disabled")
-{
-
-    Write-Host "The service " $trap.name " Start Type is disabled "
-}
-Start-Sleep -Seconds 1
-
-$trap = get-service -Name RemoteRegistry
-if ($trap.StartType -eq "Automatic")
-{
-
-    Write-Host "The service " $trap.name " Start Type is automatic "
-}
-
-if ($trap.StartType -eq "Manual")
-{
-
-    Write-Host "The service " $trap.name " Start Type is Manual "
-}
-Start-Sleep -Seconds 1
-
-if ($trap.StartType -eq "Disabled")
-{
-
-    Write-Host "The service " $trap.name " Start Type is disabled "
-}
-Start-Sleep -Seconds 1
-
-$trap = get-service -Name BDESVC
-if ($trap.StartType -eq "Automatic")
-{
-
-    Write-Host "The service " $trap.name " Start Type is automatic "
-}
-
-if ($trap.StartType -eq "Manual")
-{
-
-    Write-Host "The service " $trap.name " Start Type is Manual "
-}
-Start-Sleep -Seconds 1
-
-if ($trap.StartType -eq "Disabled")
-{
-
-    Write-Host "The service " $trap.name " Start Type is disabled "
-}
-Start-Sleep -Seconds 2
-
-<#
-We are creating a firewall rule to allow ICMP
-#>
-powershell -Command "Write-Host ' Creating a firewall rule to allow ICMP traffic (Ping) ' -F darkgray -B black"
-Start-Sleep -Seconds 2
-netsh advfirewall firewall add rule name="Ping" protocol="icmpv4:8,any" dir=in action=allow
-<#
-(for notebooks) Here we are creating a registry to inform if webcam is on
-#>
-powershell -Command "Write-Host ' Turn On Webcam On/Off OSD Notifications ' -F darkgray -B black"
-Start-Sleep -Seconds 2
-Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\OEM\Device\Capture' -Name 'NoPhysicalCameraLED' -Value '00000001'
-Start-Sleep -Seconds 2
-DisplayMenu
-}
-
-4 {
-#OPTION4 - Install Base software
-<#
-we are installing the base software via winget package manager, to add another app please search availability using the command  "winget search appname" 
-and add the string "winget install appid"
-to remove an app from the install list, place the simbol # before the string belonging to the app you dont wish to install
-Winget install GlavSoft.TightVNC -h --accept-package-agreements --accept-source-agreements
-winget install RustDesk.RustDesk -h --accept-package-agreements --accept-source-agreements
-winget install AIMP.AIMP -h --accept-package-agreements --accept-source-agreements
-winget install VideoLAN.VLC -h --accept-package-agreements --accept-source-agreements
-#>
-winget install Mozilla.Firefox -h --accept-package-agreements --accept-source-agreements
-winget install Google.Chrome -h --accept-package-agreements --accept-source-agreements
-winget install Adobe.Acrobat.Reader.64-bit -h --accept-package-agreements --accept-source-agreements
-winget install 7zip.7zip -h --accept-package-agreements --accept-source-agreements
-winget install RARLab.WinRAR -h --accept-package-agreements --accept-source-agreements
-winget install Microsoft.DotNet.Framework.DeveloperPack_4 -h --accept-package-agreements --accept-source-agreements
-winget install 9WZDNCRDFWX0 -h --accept-package-agreements --accept-source-agreements
-winget install Microsoft.VCRedist.2005.x64 -h --accept-package-agreements --accept-source-agreements
-winget install Microsoft.VCRedist.2008.x64 -h --accept-package-agreements --accept-source-agreements
-winget install Microsoft.VCRedist.2010.x64 -h --accept-package-agreements --accept-source-agreements
-winget install Microsoft.VCRedist.2012.x64 -h --accept-package-agreements --accept-source-agreements
-winget install Microsoft.VCRedist.2013.x64 -h --accept-package-agreements --accept-source-agreements
-winget install Microsoft.VCRedist.2015+.x64 -h --accept-package-agreements --accept-source-agreements
-Dism /online /Enable-Feature /FeatureName:"NetFx3"
-start-sleep -seconds 3
-DisplayMenu
-}
-9 {
-#OPTION9 - EXIT
-Write-Host "Bye"
-Break
-}
-default {
-#DEFAULT OPTION
-Write-Host "Option not available"
-Start-Sleep -Seconds 2
-DisplayMenu
-}
-}
-}
-DisplayMenu
+            $data | Out-File -FilePath $file -Encoding utf8
+            if (Test-Path $file) {
+                Write-host "WinRAR activated" -f Yellow
+            }
+            Else {
+                $data | Out-File -FilePath $file -Encoding utf8
+            }
+            Start-Sleep -Seconds 2
+            Write-Host (' Starting Windows/Office tool ') -F DarkGreen
+            Invoke-RestMethod https://get.activated.win | Invoke-Expression
+        }
+        'Q' { Write-Host "`nGoodbye!"; break }
+        default { Write-Host "`nInvalid selection, please try again." }
+    }
+    Start-Sleep -Seconds 1
+
+} while ($key -ne 'Q')

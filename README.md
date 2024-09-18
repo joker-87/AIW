@@ -53,7 +53,9 @@ Adobe Acrobat Reader
 
 WinRAR
 
-RustDesk
+AIMP
+
+VLC
 
 NetFramework 4.8.1
 
