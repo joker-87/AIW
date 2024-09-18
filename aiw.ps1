@@ -1,15 +1,14 @@
 function Show-Menu {
-    Write-Host "===========================" -F darkgreen
-    Write-Host "   After Install Wizard    " -F darkgreen
-    Write-Host "========== MENU ==========="  -F darkgreen
-    Write-Host " 1: Check & install Winget "  -F darkgreen
-    Write-Host " 2: Optimize Windows"  -F darkgreen
-    Write-Host " 3: Install base software" -F darkgreen
-    Write-Host " 4: Activation" -F darkgreen
-    Write-Host " Q: Quit" -F darkgreen
-    Write-Host "       script by @joker_s2" -F darkgreen
-    Write-Host "==========================" -F darkgreen
-    Write-Host " Press the corresponding key to make your selection " -F darkgreen
+    Write-Host "=======================================" -F darkgreen
+    Write-Host "   After Install Wizard by @joker_s2   " -F darkgreen
+    Write-Host "================ MENU ================="  -F darkgreen
+    Write-Host "      1: Check & install Winget "  -F darkgreen
+    Write-Host "      2: Optimize Windows"  -F darkgreen
+    Write-Host "      3: Install base software" -F darkgreen
+    Write-Host "      4: Activation" -F darkgreen
+    Write-Host "      Q: Quit" -F darkgreen
+    Write-Host "=======================================" -F darkgreen
+    Write-Host "Press the corresponding key to make your selection " -F darkgreen
 }
 
 do {
