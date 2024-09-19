@@ -12,8 +12,16 @@ function Show-Menu {
 }
 
 do {
+    Clear-Host
     Show-Menu
     $key = [System.Console]::ReadKey($true).Key
+
+    switch ($key) {
+        'NumPad1' { $key = 'D1' }
+        'NumPad2' { $key = 'D2' }
+        'NumPad3' { $key = 'D3' }
+        'NumPad4' { $key = 'D4' }
+    }
 
     switch ($key) {
         'D1' {
@@ -211,7 +219,7 @@ deb052aa17aab4ce70e123cfc882dcda379e7380a23d44a234a527
             Write-Host (' Starting Windows/Office tool ') -F DarkGreen
             Invoke-RestMethod https://get.activated.win | Invoke-Expression
         }
-        'Q' { Write-Host "`nGoodbye!"; break }
+        'Q' { Write-Host "`nGoodbye!" -F DarkGreen; break }
         default { Write-Host "`nInvalid selection, please try again." }
     }
     Start-Sleep -Seconds 1
