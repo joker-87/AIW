@@ -113,7 +113,7 @@ do {
             foreach ($package in $packages) {
                 Write-Host "Attempting to uninstall $package"
                 $app = Get-AppxPackage -Name $package -ErrorAction SilentlyContinue
-                if ($app -ne $null) {
+                if ($null -ne $app) {
                     $app | Remove-AppxPackage
                     Write-Host "$package uninstalled"
                 }
@@ -123,8 +123,17 @@ do {
             }
             Start-Sleep -seconds 1
             Write-Host ' Opening System Properties Performance ' -F DarkGreen
-            $message = "Select the option:" + [Environment]::NewLine + "Adjust for better performance" + [Environment]::NewLine + " and then press [Apply] and [OK]" + [Environment]::NewLine + "but keep the option:  " + [Environment]::NewLine + "Show thumbnails instead of icons"
-            $wshell.Popup($message, 0, "Performance Options", 0x1) 
+            Start-Sleep -Seconds 1
+            $wshell = New-Object -ComObject WScript.Shell
+            $message = "      Select the option:`n" +
+            "                    `n" +
+            "Adjust for better performance`n" + 
+            "and then press [Apply] and [OK]`n" + 
+            "but keep the option:`n" +
+            "                    `n" + 
+            "Show thumbnails instead of icons"
+            $wshell.Popup($message, 0, "Performance Options", 0x1)
+
             Start-Process C:\Windows\System32\SystemPropertiesPerformance.exe
             Write-Host ' Creating a firewall rule to allow ICMP traffic (Ping) ' -F DarkGreen
             Start-Sleep -Seconds 1
