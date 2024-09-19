@@ -78,6 +78,7 @@ do {
                 "Microsoft.Office.Sway"
                 "Microsoft.Office.Todo.List"
                 "Microsoft.OneConnect"
+                "Microsoft.OutlookForWindows"
                 "Microsoft.People"
                 "Microsoft.Print3D"
                 "Microsoft.RemoteDesktop"
@@ -124,7 +125,7 @@ do {
             Start-Sleep -Seconds 1
             Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\OEM\Device\Capture' -Name 'NoPhysicalCameraLED' -Value '00000001'
             Start-Sleep -Seconds 1
-            Write-Host "Optimizeing Windows Services" -F DarkGreen
+            Write-Host "Optimizing Windows Services" -F DarkGreen
             $services = @(
                 "SysMain"
                 "WSearch"
@@ -135,28 +136,28 @@ do {
                 "BDESVC"
                 "ClickToRunSvc"
             )
+
             foreach ($service in $services) {
-                Write-Host "Stop and disable services"
-                Stop-Service $service -Force
-                Set-Service -Name $service -StartupType Disabled
-                Write-Host "Checking services statuses"
-                $trap = get-service -Name $state
-                switch ($trap.StartType) {
-                    "Automatic" {
-                        Write-Host "The service $trap.Name Start Type is automatic"
+                $trap = Get-Service -Name $service -ErrorAction SilentlyContinue
+                if ($trap -ne $null) {
+                    Write-Host "Checking status of $service"
+        
+                    if ($trap.Status -eq 'Running') {
+                        Write-Host "Stopping $service..."
+                        Stop-Service -Name $service -Force -ErrorAction SilentlyContinue
+                        Write-Host "$service stopped"
                     }
-                    "Manual" {
-                        Write-Host "The service $trap.Name Start Type is Manual"
-                    }
-                    "Disabled" {
-                        Write-Host "The service $trap.Name Start Type is disabled"
-                    }
-                    Default {
-                        Write-Host "Unknown StartType: $($trap.StartType)"
-                    }
+
+                    Write-Host "Disabling $service..."
+                    Set-Service -Name $service -StartupType Disabled -ErrorAction SilentlyContinue
+                    Write-Host "$service startup type set to Disabled"
+        
+
+                    $trap = Get-Service -Name $service
+                    Write-Host "$($trap.Name) is now $($trap.Status), Start Type is $($trap.StartType)"
+                    Start-Sleep -Seconds 1
                 }
             }
-            Start-Sleep -Seconds 1
         }
         'D3' {
             $apps = @(
