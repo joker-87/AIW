@@ -122,6 +122,12 @@ do {
                 }
             }
             Start-Sleep -seconds 1
+            winget uninstall 9mssgkg348sp
+            winget uninstall 9p1j8s7ccwwt
+            winget uninstall 9nblggh5r558
+            winget uninstall 9wzdncrfj4q7
+            winget uninstall 9nht9rb2f4hd
+            Start-Sleep -seconds 1
             Write-Host ' Opening System Properties Performance ' -F DarkGreen
             Start-Sleep -Seconds 1
             $wshell = New-Object -ComObject WScript.Shell
@@ -193,7 +199,8 @@ do {
                 "Microsoft.VCRedist.2013.x64",
                 "Microsoft.VCRedist.2015+.x64",
                 "AIMP.AIMP",
-                "VideoLAN.VLC"
+                "VideoLAN.VLC",
+                "Oracle.JavaRuntimeEnvironment"
             )
             $apps | ForEach-Object {
                 winget install $_  -h --accept-package-agreements --accept-source-agreements
