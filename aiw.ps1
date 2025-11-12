@@ -122,11 +122,11 @@ do {
                 }
             }
             Start-Sleep -seconds 1
-            winget uninstall 9mssgkg348sp
-            winget uninstall 9p1j8s7ccwwt
-            winget uninstall 9nblggh5r558
-            winget uninstall 9wzdncrfj4q7
-            winget uninstall 9nht9rb2f4hd
+            winget uninstall 9mssgkg348sp -h --accept-package-agreements --accept-source-agreements
+            winget uninstall 9p1j8s7ccwwt -h --accept-package-agreements --accept-source-agreements
+            winget uninstall 9nblggh5r558 -h --accept-package-agreements --accept-source-agreements
+            winget uninstall 9wzdncrfj4q7 -h --accept-package-agreements --accept-source-agreements
+            winget uninstall 9nht9rb2f4hd -h --accept-package-agreements --accept-source-agreements
             Start-Sleep -seconds 1
             Write-Host ' Opening System Properties Performance ' -F DarkGreen
             Start-Sleep -Seconds 1
